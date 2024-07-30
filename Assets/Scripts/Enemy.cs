@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    [SerializeField]
+    private float m_jumpCooldown = 1.0f; //time between jumps
+
+    [SerializeField]
+    private float m_jumpLength = 5.0f;
+
+    [SerializeField]
+    private float m_direction = -1.0f;
+
+    [SerializeField]
+    private Rect m_boundaries = new Rect();
+
+    [SerializeField]
+    private float m_life = 100.0f;
+
+    [SerializeField]
+    private float m_strength = 20.0f; //deal damage equal to strength
+
+    private float m_timeToJumpNext = 0.0f;
+
+    void Start()
+    {
+        m_timeToJumpNext = Time.time + m_jumpCooldown;
+    }
+
+    void FixedUpdate()
+    {
+        Movement();
+    }
+
+    private void Movement()
+    {
+        if (Time.time >= m_timeToJumpNext)
+        {
+            Vector3 newPos = transform.position + new Vector3(m_jumpLength * m_direction, 0);
+            if(newPos.x < m_boundaries.x || newPos.x > m_boundaries.x + m_boundaries.width)
+            {
+                newPos = transform.position + new Vector3(0, -m_jumpLength);
+                m_direction = -m_direction;
+                if(newPos.y < m_boundaries.y - m_boundaries.height)
+                {
+                    GameManager.Instance.PlayerTakeDamage(m_strength);
+                    Destroy(gameObject);
+                }
+            }
+
+            transform.position = newPos;
+
+            m_timeToJumpNext = Time.time + m_jumpCooldown;
+        }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        m_life -= amount;
+        if (m_life <= 0.0f)
+            Destroy(gameObject);
+    }
+}
