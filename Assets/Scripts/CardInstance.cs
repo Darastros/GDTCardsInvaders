@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardInstance : MonoBehaviour, IPointerClickHandler
+public class CardInstance : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 {
     private CardData m_cardData;
     private CardHolder m_holder;
@@ -19,5 +19,10 @@ public class CardInstance : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         m_holder.OnCardClicked(gameObject);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        m_holder.OnCardHold(gameObject);
     }
 }

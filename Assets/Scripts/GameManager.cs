@@ -19,9 +19,6 @@ public class GameManager : MonoBehaviour
     ///
 
     [SerializeField]
-    private GameObject m_shotPrefab; //TEST
-
-    [SerializeField]
     private float m_playerHealth = 100.0f;
 
     [SerializeField]
@@ -59,15 +56,5 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         m_gameOverScreen.SetActive(true);
-    }
-
-    private void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-            //Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //pos += new Vector3(0.0f, 0.0f, 10.0f);
-            //Instantiate(m_shotPrefab, pos, Quaternion.identity);
-        }
     }
 }

@@ -16,6 +16,9 @@ public class CardHolder : MonoBehaviour
     public virtual void OnCardClicked(GameObject clickedCard)
     { }
 
+    public virtual void OnCardHold(GameObject holdCard)
+    { }
+
     protected void InitHolder()
     {
         m_cards = new List<GameObject>();

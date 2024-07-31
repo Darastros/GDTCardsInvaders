@@ -10,6 +10,7 @@ public class Hand : CardHolder
     [SerializeField]
     private GameObject m_cursor; //indicate from where you play card (start position of shots)
 
+    private bool m_isHold = false;
     private int m_selectedCard; //index in m_cards, -1 if no card selected
     private Deck m_playerDeck;
     public void InitHand(Deck playerDeck)
@@ -51,9 +52,16 @@ public class Hand : CardHolder
             m_cards[m_selectedCard].transform.position += new Vector3(0.0f, 0.5f);
     }
 
-    public override void OnCardClicked(GameObject clickedCard)
+    public override void OnCardClicked(GameObject clickedCard) //doesn't work anymore, clash with onCardHold => fix : add a slight delay before considering a card "hold"
     {
         m_selectedCard = m_cards.FindIndex(card => card == clickedCard);
+        UpdateCardDisplay();
+    }
+
+    public override void OnCardHold(GameObject HoldCard)
+    {
+        m_selectedCard = m_cards.FindIndex(card => card == HoldCard);
+        m_isHold = true;
         UpdateCardDisplay();
     }
 
@@ -63,7 +71,7 @@ public class Hand : CardHolder
         {
             Vector3 cursorPos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -2.25f);
             m_cursor.transform.position = cursorPos;
-            if (Input.GetMouseButtonDown(0))
+            if ((Input.GetMouseButtonDown(0) && !m_isHold) || (Input.GetMouseButtonUp(0) && m_isHold))
             {
                 GameObject selectedCard = m_cards[m_selectedCard];
                 selectedCard.GetComponent<CardInstance>().GetCardData().Resolve(cursorPos);
