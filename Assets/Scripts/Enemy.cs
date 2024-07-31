@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     private Rect m_boundaries = new Rect();
 
     [SerializeField]
-    private float m_life = 100.0f;
+    private float m_health = 100.0f;
 
     [SerializeField]
     private float m_strength = 20.0f; //deal damage equal to strength
@@ -58,8 +58,14 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        m_life -= amount;
-        if (m_life <= 0.0f)
+        m_health -= amount;
+        UpdateHealthDisplay();
+        if (m_health <= 0.0f)
             Destroy(gameObject);
+    }
+
+    private void UpdateHealthDisplay()
+    {
+        GetComponent<SpriteRenderer>().color = new Color(1.0f, m_health / 100.0f, m_health / 100.0f);
     }
 }

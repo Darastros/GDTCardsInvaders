@@ -13,13 +13,21 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        //InitGame();
+        InitGame();
     }
     ///////////////////////////////////////////////////////
     ///
 
     [SerializeField]
+    private GameObject m_shotPrefab; //TEST
+
+    [SerializeField]
     private float m_playerHealth = 100.0f;
+
+    [SerializeField]
+    private Deck m_playerDeck;
+    [SerializeField]
+    private Hand m_playerHand;
 
     [SerializeField]
     private TMP_Text m_healthText;
@@ -27,8 +35,10 @@ public class GameManager : MonoBehaviour
     private GameObject m_gameOverScreen;
 
 
-    void Start()
+    void InitGame()
     {
+        m_playerDeck.InitDeck();
+        m_playerHand.InitHand(m_playerDeck);
         UpdateHealthDisplay();
     }
 
@@ -51,5 +61,13 @@ public class GameManager : MonoBehaviour
         m_gameOverScreen.SetActive(true);
     }
 
-
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            //Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //pos += new Vector3(0.0f, 0.0f, 10.0f);
+            //Instantiate(m_shotPrefab, pos, Quaternion.identity);
+        }
+    }
 }
