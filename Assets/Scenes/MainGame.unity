@@ -416,6 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 442904358}
   - component: {fileID: 442904357}
+  - component: {fileID: 442904359}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: Untagged
@@ -490,6 +491,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1527996516}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &442904359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442904356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 735a2423c8c8d6a478d9cc6b9542c275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _holdColor: {r: 0.94708157, g: 1, b: 0, a: 0}
+  _holdScale: {x: 0.5, y: 0.6, z: 1}
 --- !u!4 &499087848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1007818562066122687, guid: 6453728edf9d07a41af53b8cca9bf923, type: 3}
@@ -1519,7 +1534,7 @@ MonoBehaviour:
   m_maxInterval: 3
   m_cardInstancePrefab: {fileID: 2165801551750313955, guid: ac44498ee869a8441841c02ec9b60bec, type: 3}
   m_handsize: 3
-  m_cursor: {fileID: 442904356}
+  m_cursor: {fileID: 442904359}
 --- !u!212 &1595697073
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand : CardHolder
@@ -7,17 +5,16 @@ public class Hand : CardHolder
     [SerializeField]
     private int m_handsize = 3;
 
-    [SerializeField]
-    private GameObject m_cursor; //indicate from where you play card (start position of shots)
+    [SerializeField, Tooltip("Indicates from where you play card (start position of shots)")]
+    private Cursor m_cursor;
 
-    private bool m_isHold = false;
     private int m_selectedCard; //index in m_cards, -1 if no card selected
     private Deck m_playerDeck;
+
     public void InitHand(Deck playerDeck)
     {
         InitHolder();
         m_playerDeck = playerDeck;
-        m_cursor.transform.position = new Vector3(100.0f, 100.0f);
         m_selectedCard = -1;
         RefillHand();
     }
@@ -61,7 +58,6 @@ public class Hand : CardHolder
     public override void OnCardHold(GameObject HoldCard)
     {
         m_selectedCard = m_cards.FindIndex(card => card == HoldCard);
-        m_isHold = true;
         UpdateCardDisplay();
     }
 
@@ -69,14 +65,17 @@ public class Hand : CardHolder
     {
         if(m_selectedCard >= 0)
         {
-            Vector3 cursorPos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -2.25f);
-            m_cursor.transform.position = cursorPos;
-            if ((Input.GetMouseButtonDown(0) && !m_isHold) || (Input.GetMouseButtonUp(0) && m_isHold))
+            if (Input.GetMouseButtonDown(0))
+            {
+                m_cursor.Hold();
+            }
+            else if (Input.GetMouseButtonUp(0))
             {
                 GameObject selectedCard = m_cards[m_selectedCard];
-                selectedCard.GetComponent<CardInstance>().GetCardData().Resolve(cursorPos);
+                selectedCard.GetComponent<CardInstance>().GetCardData().Resolve(m_cursor.transform.position);
+                m_cursor.Release();
+
                 m_selectedCard = -1;
-                m_cursor.transform.position = new Vector3(100.0f, 100.0f);
                 m_playerDeck.AddToDiscard(selectedCard.GetComponent<CardInstance>().GetCardData());
                 RemoveCard(selectedCard);
                 Destroy(selectedCard);
