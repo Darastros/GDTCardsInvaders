@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -39,15 +37,24 @@ public class Enemy : MonoBehaviour
         if (Time.time >= m_timeToJumpNext)
         {
             Vector3 newPos = transform.position + new Vector3(m_jumpLength * m_direction, 0);
-            if(newPos.x < m_boundaries.x || newPos.x > m_boundaries.x + m_boundaries.width)
+
+            var outOfLeftBound = newPos.x < m_boundaries.x;
+            var outOfRightBound = newPos.x > m_boundaries.x + m_boundaries.width;
+            if (outOfLeftBound || outOfRightBound)
             {
-                newPos = transform.position + new Vector3(0, -m_jumpLength);
-                m_direction = -m_direction;
-                if(newPos.y < m_boundaries.y - m_boundaries.height)
-                {
-                    GameManager.Instance.PlayerTakeDamage(m_strength);
-                    Destroy(gameObject);
-                }
+                var extraLength = m_boundaries.x - newPos.x;
+                if (outOfRightBound)
+                    extraLength += m_boundaries.width;
+                newPos.x += 2f * extraLength;
+                newPos.y -= m_jumpLength;
+
+                m_direction *= -1f;
+            }
+
+            if (newPos.y < m_boundaries.y - m_boundaries.height)
+            {
+                GameManager.Instance.PlayerTakeDamage(m_strength);
+                Destroy(gameObject);
             }
 
             transform.position = newPos;
