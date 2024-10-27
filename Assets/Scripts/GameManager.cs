@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-
-public class GameManager : MonoBehaviour
+public enum EGameStep
 {
+    Intro,
+    Game,
+    GameOver
+}
 
-    /////////////SINGLETON IMPLEMENTATION/////////////////
+public class GameManager : FiniteStateMachine<EGameStep>
+{
+    #region Singleton
     private static GameManager instance = null;
     public static GameManager Instance => instance;
     private void Awake()
     {
         instance = this;
-        InitGame();
+        RequestStep(EGameStep.Intro);
     }
-    ///////////////////////////////////////////////////////
-    ///
+    #endregion
 
     [SerializeField]
     private float m_playerHealth = 100.0f;
@@ -27,9 +28,24 @@ public class GameManager : MonoBehaviour
     private Hand m_playerHand;
 
     [SerializeField]
+    private GameObject m_enemiesRoot;
+
+    [SerializeField]
     private TMP_Text m_healthText;
     [SerializeField]
     private GameObject m_gameOverScreen;
+
+    #region FSM
+    public void Intro_Enter()
+    {
+        GetComponent<CinematicManager>().RunCinematic(() => RequestStep(EGameStep.Game));
+    }
+
+    public void Game_Enter()
+    {
+        InitGame();
+    }
+    #endregion
 
 
     void InitGame()
