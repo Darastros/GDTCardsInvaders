@@ -20,11 +20,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float m_strength = 20.0f; //deal damage equal to strength
 
-    private float m_timeToJumpNext = 0.0f;
+    private float m_currentJumpCooldown = 0.0f;
 
     void Start()
     {
-        m_timeToJumpNext = Time.time + m_jumpCooldown;
+        m_currentJumpCooldown = m_jumpCooldown;
     }
 
     void FixedUpdate()
@@ -34,7 +34,8 @@ public class Enemy : MonoBehaviour
 
     private void Movement()
     {
-        if (Time.time >= m_timeToJumpNext)
+        m_currentJumpCooldown -= Time.deltaTime;
+        if (m_currentJumpCooldown < 0.0f)
         {
             Vector3 newPos = transform.position + new Vector3(m_jumpLength * m_direction, 0);
 
@@ -59,7 +60,7 @@ public class Enemy : MonoBehaviour
 
             transform.position = newPos;
 
-            m_timeToJumpNext = Time.time + m_jumpCooldown;
+            m_currentJumpCooldown = m_jumpCooldown + m_currentJumpCooldown;
         }
     }
 
