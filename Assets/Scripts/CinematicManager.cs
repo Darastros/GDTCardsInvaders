@@ -59,7 +59,7 @@ public class CinematicManager : MonoBehaviour
 
         if (action.WaitForInput)
         {
-            yield return new WaitForSeconds(3f);
+            yield return WaitForInput();
         }
         else
         {
@@ -67,6 +67,16 @@ public class CinematicManager : MonoBehaviour
         }
 
         _speechBubbleRoot.SetActive(false);
+    }
+
+    private IEnumerator WaitForInput()
+    {
+        while (true)
+        {
+            if (Input.anyKeyDown)
+                break;
+            else yield return new WaitForFixedUpdate();
+        }
     }
 
     private void OnCinematicFinished()
