@@ -27,6 +27,7 @@ public class CinematicManager : MonoBehaviour
 
     [SerializeField] private GameObject _speechBubbleRoot;
     [SerializeField] public TextMeshProUGUI _speechBubbleText;
+    [SerializeField] private BlinkAnimation _waitInputBlinker;
 
     public void RunCinematic(Action onDone)
     {
@@ -59,10 +60,12 @@ public class CinematicManager : MonoBehaviour
 
         if (action.WaitForInput)
         {
+            _waitInputBlinker.enabled = true;
             yield return WaitForInput();
         }
         else
         {
+            _waitInputBlinker.enabled = false;
             yield return new WaitForSeconds(action.Duration);
         }
 
